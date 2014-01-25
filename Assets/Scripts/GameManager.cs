@@ -3,8 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-	public GameObject Player;
-	public GameObject Goal;
+	private GameObject Player;
+	private GameObject Goal;
 	public float GoalArrivedDelta;
 	public float SecondsForFadeToBlack;
 
@@ -17,6 +17,11 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		
+		Player = GameObject.FindGameObjectWithTag("Player");
+		Goal = GameObject.FindGameObjectWithTag("Finish");
+
 		blackScreen = GameObject.FindGameObjectWithTag ("BlackScreen");
 		levelNumber = GameObject.FindGameObjectWithTag ("LevelNumber");
 
@@ -31,7 +36,6 @@ public class GameManager : MonoBehaviour {
 		fadeDirection = FadeDirection.FadeIn;
 		alpha = 1f;
 		InvokeRepeating ("FadeStep", 0, fadeToBlackRefreshRate);
-
 
 
 	}
