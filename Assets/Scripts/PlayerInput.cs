@@ -11,7 +11,6 @@ public class PlayerInput : MonoBehaviour {
 	public float Speed = 10;
 	public float soundRadius = 1.0f;
 
-	public int clip = 0;
 	public AudioClip[] clips;
 
 	public GameObject blood;
@@ -27,7 +26,7 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!dead) {
+		if (!dead && GameManager.Singleton.gameRunning) {
 			Vector2 currentSpeed = Vector2.zero;
 			if (Input.GetKey (Up))
 					currentSpeed.y = Speed;
@@ -41,6 +40,9 @@ public class PlayerInput : MonoBehaviour {
 			if (Input.GetKey (Sound)) {
 				AudioSource audio = GameObject.FindGameObjectWithTag ("Player").GetComponent<AudioSource> ();
 				if (!audio.isPlaying) {
+
+					int clip = Random.Range(0, clips.Length - 1);
+
 					audio.clip = clips [clip];
 					audio.Play ();
 					callEnemys();
@@ -65,11 +67,14 @@ public class PlayerInput : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.collider.gameObject.tag == "Enemy") {
-			if (!dead) {
+			Enemy e = (Enemy) coll.collider.gameObject.GetComponent("Enemy");
+			if (!dead && !e.dead) {
 				Transform t = coll.gameObject.transform;
 				Instantiate(blood, t.position, Random.rotation);
 				dead = true;
+				GameManager.Singleton.Loose();
 			}
+			e.CollidedWithPlayer(this);
 		}
 	}
 

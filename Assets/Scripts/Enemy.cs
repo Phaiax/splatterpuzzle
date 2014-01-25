@@ -8,6 +8,7 @@ public enum AiState
 	Roam,
 	Follow,
 	Freeze,
+	Die
 }
 
 public class Enemy : MonoBehaviour {
@@ -26,11 +27,14 @@ public class Enemy : MonoBehaviour {
 
 	GameObject Player;
 	float RoamOrientation;
-	bool dead = false;
+	public bool dead = false;
 
 	const float RoamDist = 10f;
 	const float RestToRoamTimerStart = 5f;
 	float ResetToRoamTimer;
+
+	public AudioClip[] killed_clips;
+	public AudioClip[] mumble_clips;
 
 	// Use this for initialization
 	void Start () {
@@ -39,13 +43,36 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!dead) {
+		if (!dead && GameManager.Singleton.gameRunning) {
 			Think ();
 			Act ();
+			Mumble();
 		} else {
 			rigidbody2D.rigidbody2D.velocity = Vector2.zero;
 		}
 	}
+
+	public float groupieRadius;
+	public int mumbleGroupSize;
+
+	bool inGroup()
+	{
+		int num_friends = 0;
+
+		Vector3 pos = transform.position;
+		GameObject[] gos = GameObject.FindGameObjectsWithTag ("Enemy");
+		float sqSoundRadius = groupieRadius * groupieRadius;
+		foreach (GameObject go in gos) {
+			Vector3 d = pos-go.transform.position;
+			if(d.x*d.x+d.y*d.y+d.z*d.z <= sqSoundRadius) {
+				num_friends++;
+			}
+		}
+
+		return num_friends >= mumbleGroupSize;
+	}
+
+
 
 	/// <summary>
 	/// Select one of the ai states.
@@ -95,30 +122,86 @@ public class Enemy : MonoBehaviour {
 			case(AiState.Freeze):
 				so = new SteeringOutput();
 				break;
+
+			case(AiState.Die):
+				Die(transform);
+				break;
 		}
 		rigidbody2D.velocity = so.Linear;
 	}
 
-	public void Die(GameObject obj)
+	public void Die(Transform t)
 	{
+		AudioSource audio = GetComponent<AudioSource> ();
+		audio.Stop ();
 		dead = true;
-		Transform t = obj.transform;
+		MakeBlood (t);
+
+	}
+
+	public void MakeBlood( Transform t)
+	{
+		bloodcounter++;
+		Debug.Log (bloodcounter.ToString ());
 		Instantiate(blood, t.position, Random.rotation);
+
+		Splatter ();
+	}
+
+	public void Splatter(){
+		AudioSource audio = GetComponent<AudioSource> ();
+		if (!audio.isPlaying) {
+			
+			int clip = Random.Range(0, killed_clips.Length - 1);
+			audio.volume = 1f;
+			audio.clip = killed_clips [clip];
+			audio.Play ();
+
+		}
+	}
+
+	public float MumbleVolume = 0.35f;
+
+	void Mumble ()
+	{
+		if(inGroup())
+		{
+			AudioSource audio = GetComponent<AudioSource> ();
+			if (!audio.isPlaying) {
+				
+				int clip = Random.Range(0, mumble_clips.Length - 1);
+				
+				audio.clip = mumble_clips [clip];
+				audio.volume = MumbleVolume;
+				audio.Play ();
+				
+			}
+		}
 	}
 	
-	public void HearSound(int sound)
+		public void HearSound(int sound)
 	{
 		hearedSound = true;
 	}
 
+	int bloodcounter = 0;
+
+	public void CollidedWithPlayer(PlayerInput p)
+	{
+		if (!dead) {
+			Die(transform);
+		} 
+		else// if(Random.Range(1, 100) < 10)
+		{
+			MakeBlood(transform);
+		}
+
+	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.collider.gameObject.tag == "Player") {
-			if (!dead) {
-				Die(coll.gameObject);
-			} else if (coll.collider.gameObject.tag == "wall") {
-				NewRandomRoamTarget();
-			}
+		if (coll.collider.gameObject.tag == "wall")
+		{
+			NewRandomRoamTarget();
 		}
 	}
 

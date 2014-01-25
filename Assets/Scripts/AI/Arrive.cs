@@ -30,7 +30,7 @@ static class Arrive
 			steering.Linear.Normalize();
 			steering.Linear *= AIConstants.AIRoamSpeed;
 		}
-		Debug.Log ("Steering: " + steering.ToString ());
+		//Debug.Log ("Steering: " + steering.ToString ());
 		return steering;
 	}
 }

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+	public static GameManager Singleton;
+
 	private GameObject Player;
 	private GameObject Goal;
 	public float GoalArrivedDelta;
@@ -12,12 +14,12 @@ public class GameManager : MonoBehaviour {
 	public string NextLevelNumber;
 	public string NextLevelName;
 
-	private bool gameEnded = false;
-	private bool gameWon = false;
+	public bool gameRunning = false;
+	public bool gameWon = false;
 
 	// Use this for initialization
 	void Start () {
-
+		GameManager.Singleton = this;
 		
 		Player = GameObject.FindGameObjectWithTag("Player");
 		Goal = GameObject.FindGameObjectWithTag("Finish");
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour {
 		alpha = 1f;
 		InvokeRepeating ("FadeStep", 0, fadeToBlackRefreshRate);
 
+		gameRunning = true;
 
 	}
 
@@ -72,10 +75,15 @@ public class GameManager : MonoBehaviour {
 	private AudioSource viola;
 	private bool waitForViola = false;
 
+	public void Loose()
+	{
+		Debug.Log ("Loose");
+	}
+
 	void Win()
 	{
 		gameWon = true;
-		gameEnded = true;
+		gameRunning = false;
 
 		levelNumberGuiText.text = NextLevelNumber;
 
