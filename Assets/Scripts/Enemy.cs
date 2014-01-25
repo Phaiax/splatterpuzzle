@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour {
 	private void Think()
 	{
 		float distance = Vector2.Distance(Player.transform.position, this.transform.position);
-		Debug.Log (distance);
+		//Debug.Log (distance);
 		if (distance < PursueDistance)
 			State = AiState.Pursue;
 		else
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour {
 		switch (State)
 		{
 			case(AiState.Pursue):
-				Debug.Log("Pursueing the Player!");
+				//Debug.Log("Pursueing the Player!");
 				Target t = new Target();
 				t.TargetObject = Player;
 				so = Pursue.GetSteering(this.gameObject, t);

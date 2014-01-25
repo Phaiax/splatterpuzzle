@@ -13,6 +13,12 @@ public class DeadTest : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKey (DieKey)) {
+
+			GetComponent<AudioSource>().Play();
+
+		}
+
+
 	}
 }

@@ -14,10 +14,41 @@ public class CameraFollow : MonoBehaviour
 	private Transform player;		// Reference to the player's transform.
 
 
+
 	void Awake ()
 	{
 		// Setting up the reference.
 		player = GameObject.FindGameObjectWithTag("Player").transform;
+
+		// using Walls to define Camera margins
+		GameObject wall_left = GameObject.FindGameObjectWithTag ("wall_left");
+		GameObject wall_right = GameObject.FindGameObjectWithTag ("wall_right");
+		GameObject wall_top = GameObject.FindGameObjectWithTag ("wall_top");
+		GameObject wall_bot = GameObject.FindGameObjectWithTag ("wall_bot");
+
+		float max_x = wall_right.transform.position.x 
+			- wall_right.GetComponent<BoxCollider2D> ().size.x * wall_right.transform.localScale.x / 2;
+		float max_y = wall_top.transform.position.y 
+						- wall_top.GetComponent<BoxCollider2D> ().size.y * wall_top.transform.localScale.y / 2;
+
+
+		float min_x = wall_left.transform.position.x 
+			+ wall_right.GetComponent<BoxCollider2D> ().size.x * wall_right.transform.localScale.x / 2;
+		float min_y = wall_bot.transform.position.y 
+			+ wall_top.GetComponent<BoxCollider2D> ().size.y * wall_top.transform.localScale.y / 2;
+		
+
+		//GameObject cameraobject = GameObject.FindGameObjectsWithTag ("MainCamera");
+		//Camera camera = cameraobject.GetComponent (Camera);
+		float cameraaspect = Camera.main.aspect;
+		float camerasize = 8f;
+		Debug.Log ("wegf" + cameraaspect.ToString ());
+
+		float camera_x_offset = camerasize * 0.9f;
+		float camera_y_offset = camerasize * 0.9f / cameraaspect;
+
+		this.maxXAndY = new Vector2 (max_x - camera_x_offset, max_y - camera_y_offset);
+		this.minXAndY = new Vector2 (min_x + camera_x_offset, min_y + camera_y_offset);
 	}
 
 
