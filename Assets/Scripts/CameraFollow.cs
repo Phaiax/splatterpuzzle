@@ -17,7 +17,6 @@ public class CameraFollow : MonoBehaviour
 	void Awake ()
 	{
 		// Setting up the reference.
-		Debug.Log ("Ac1");
 		player = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 
@@ -65,7 +64,7 @@ public class CameraFollow : MonoBehaviour
 		// Set the camera's position to the target position with the same z component.
 		transform.position = new Vector3(targetX, targetY, transform.position.z);
 
-		Debug.Log ("Ac" + player.position.x.ToString() + " " + player.position.y.ToString() );
+
 
 	}
 }
