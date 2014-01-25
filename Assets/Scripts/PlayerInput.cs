@@ -12,6 +12,10 @@ public class PlayerInput : MonoBehaviour {
 
 	public int clip = 0;
 	public AudioClip[] clips;
+
+	public GameObject blood;
+
+	private bool dead = false;
 	
 
 	// Use this for initialization
@@ -21,22 +25,35 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector2 currentSpeed = Vector2.zero;
-		if (Input.GetKey (Up))
-			currentSpeed.y = Speed;
-		if (Input.GetKey (Down))
-			currentSpeed.y = -Speed;
-		if (Input.GetKey (Left))
-			currentSpeed.x = -Speed;
-		if (Input.GetKey (Right))
-			currentSpeed.x = Speed;
-		rigidbody2D.velocity = currentSpeed;
-		if (Input.GetKey (Sound)) {
-			AudioSource audio = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
-			if(!audio.isPlaying) {
-				audio.clip = clips[clip];
-				audio.Play();
+		if(!dead) {
+			Vector2 currentSpeed = Vector2.zero;
+			if (Input.GetKey (Up))
+				currentSpeed.y = Speed;
+			if (Input.GetKey (Down))
+				currentSpeed.y = -Speed;
+			if (Input.GetKey (Left))
+				currentSpeed.x = -Speed;
+			if (Input.GetKey (Right))
+				currentSpeed.x = Speed;
+			rigidbody2D.velocity = currentSpeed;
+			if (Input.GetKey (Sound)) {
+				AudioSource audio = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+				if(!audio.isPlaying) {
+					audio.clip = clips[clip];
+					audio.Play();
+				}
 			}
 		}
 	}
+
+	void OnCollisionEnter2D(Collision2D coll) {
+		if (coll.collider.gameObject.tag == "Enemy") {
+			if (!dead) {
+				Transform t = coll.gameObject.transform;
+				Instantiate(blood, t.position, t.rotation); 
+				dead = true;
+			}
+		}
+	}
+
 }
