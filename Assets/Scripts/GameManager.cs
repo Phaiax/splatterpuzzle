@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
 		blackScreen = GameObject.FindGameObjectWithTag ("BlackScreen");
 		levelNumber = GameObject.FindGameObjectWithTag ("LevelNumber");
 
-		blackScreenSpriteRenderer = blackScreen.GetComponent<SpriteRenderer>();
+		blackScreenSpriteRenderer = GameObject.FindGameObjectWithTag ("BlackScreenSprite").GetComponent<SpriteRenderer>();
 		levelNumberGuiText = levelNumber.GetComponent<GUIText> ();
 
 		SetBlackScreenAlpha (1f);

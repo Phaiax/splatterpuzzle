@@ -185,21 +185,26 @@ public class Enemy : MonoBehaviour {
 			AudioSource audio = GetComponent<AudioSource> ();
 			if (!audio.isPlaying) {
 				
-				int clip = Random.Range(0, mumble_clips.Length - 1);
+				int clip; //= Random.Range(0, mumble_clips.Length - 1);
+				audio.volume = MumbleVolume;
 				switch(lstate)
 				{
 				case LState.LHum:
+					clip = Random.Range(0, lhum_clips.Length - 1);
 					audio.clip = lhum_clips [clip];
+					audio.volume = 1;
 					break;
 				case LState.LSing:
+						clip = Random.Range(0, lsing_clips.Length - 1);
 					audio.clip = lsing_clips [clip];
+					audio.volume = 1;
 					break;
 				case LState.Mumble:
+					clip = Random.Range(0, mumble_clips.Length - 1);
 					audio.clip = mumble_clips [clip];
 					break;
 				}
 
-				audio.volume = MumbleVolume;
 				audio.Play ();
 				
 			}

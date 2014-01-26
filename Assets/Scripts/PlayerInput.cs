@@ -28,6 +28,10 @@ public class PlayerInput : MonoBehaviour {
 			AIConstants.AIMoveSpeed = 4f;
 			AIConstants.AIRoamSpeed = 2.0f;
 			break;
+		case 6:
+			AIConstants.AIMoveSpeed = 4f;
+			AIConstants.AIRoamSpeed = 2.0f;
+			break;
 		default:
 			AIConstants.AIMoveSpeed = 6.0f;
 			AIConstants.AIRoamSpeed = 1.5f;
