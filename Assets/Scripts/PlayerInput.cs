@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour {
 	public KeyCode Sound;
 
 	public float Speed = 10;
+	public float soundRadius = 1.0f;
 
 	public int clip = 0;
 	public AudioClip[] clips;
@@ -41,10 +42,23 @@ public class PlayerInput : MonoBehaviour {
 				if (!audio.isPlaying) {
 					audio.clip = clips [clip];
 					audio.Play ();
+					callEnemys();
 				}
 			}
 		} else {
 			transform.rigidbody2D.velocity = Vector2.zero;
+		}
+	}
+
+	private void callEnemys() {
+		Vector3 pos = GameObject.FindGameObjectWithTag("Player").transform.position;
+		GameObject[] gos = GameObject.FindGameObjectsWithTag ("Enemy");
+		float sqSoundRadius = soundRadius * soundRadius;
+		foreach (GameObject go in gos) {
+			Vector3 d = pos-go.transform.position;
+			if(d.x*d.x+d.y*d.y+d.z*d.z <= sqSoundRadius) {
+				((Enemy)go.GetComponent("Enemy")).HearSound(clip);
+			}
 		}
 	}
 
@@ -57,5 +71,7 @@ public class PlayerInput : MonoBehaviour {
 			}
 		}
 	}
+
+
 
 }
