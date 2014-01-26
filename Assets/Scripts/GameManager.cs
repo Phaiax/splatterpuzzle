@@ -16,7 +16,5 @@ public class GameManager : MonoBehaviour {
 		float distance = Vector2.Distance(Player.transform.position, Goal.transform.position);
 		if (distance < GoalArrivedDelta)
 			Debug.Log ("You win!");
-		else
-			Debug.Log ("...");
 	}
 }
