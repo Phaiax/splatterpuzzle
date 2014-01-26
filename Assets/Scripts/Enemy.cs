@@ -80,8 +80,7 @@ public class Enemy : MonoBehaviour {
 		if (coll.collider.gameObject.tag == "Player") {
 			if (!dead) {
 				Transform t = coll.gameObject.transform;
-				Instantiate(blood, t.position, t.rotation);
-				blood.transform.Rotate(0, 0, Random.Range(0.0f, 2*Mathf.PI));
+				Instantiate(blood, t.position, Random.rotation);
 				dead = true;
 			} else if (coll.collider.gameObject.tag == "wall") {
 				NewRandomRoamTarget();

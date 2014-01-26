@@ -52,7 +52,7 @@ public class PlayerInput : MonoBehaviour {
 		if (coll.collider.gameObject.tag == "Enemy") {
 			if (!dead) {
 				Transform t = coll.gameObject.transform;
-				Instantiate(blood, t.position, t.rotation);
+				Instantiate(blood, t.position, Random.rotation);
 				dead = true;
 			}
 		}
