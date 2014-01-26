@@ -134,12 +134,16 @@ public class GameManager : MonoBehaviour {
 		//hasLost1 = true;
 		GameManager.currentLiveCount--;
 		UpdateLifeView();
-
+		Debug.Log("Loose1");
+		CancelInvoke();
 		Invoke("Loose2", 5);
+		SetBlackScreenAlpha(0f);
+		SetLevelNumberAlpha(0f);
 	}
 
 	public void Loose2()
 	{
+		Debug.Log("Loose2");
 		//hasLost1 = false;
 		if(GameManager.currentLiveCount == 0)
 		{
@@ -161,6 +165,7 @@ public class GameManager : MonoBehaviour {
 	public void GameOver()
 	{
 		//FirstLevelFirstTry ();
+		GameManager.currentLiveCount = GameManager.startLiveCount;
 		Application.LoadLevel ("P_GameOver");
 	}
 
