@@ -13,6 +13,8 @@ public class PlayerInput : MonoBehaviour {
 	public int clip = 0;
 	public AudioClip[] clips;
 
+	public GameObject blood;
+
 	private bool dead = false;
 	
 
@@ -47,6 +49,8 @@ public class PlayerInput : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.collider.gameObject.tag == "Enemy") {
 			if (!dead) {
+				Transform t = coll.gameObject.transform;
+				Instantiate(blood, t.position, t.rotation); 
 				dead = true;
 			}
 		}
