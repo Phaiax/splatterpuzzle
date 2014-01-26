@@ -59,6 +59,8 @@ public class PlayerInput : MonoBehaviour {
 					audio.clip = clips [clip];
 					audio.Play ();
 					callEnemys();
+				} else if(LevelNum == 3) {
+					callEnemys();
 				} else if(LevelNum == 6 && audio.time > 5) 
 				{
 					audio.Stop();
