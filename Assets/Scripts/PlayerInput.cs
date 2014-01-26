@@ -25,24 +25,26 @@ public class PlayerInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!dead) {
+		if (!dead) {
 			Vector2 currentSpeed = Vector2.zero;
 			if (Input.GetKey (Up))
-				currentSpeed.y = Speed;
+					currentSpeed.y = Speed;
 			if (Input.GetKey (Down))
-				currentSpeed.y = -Speed;
+					currentSpeed.y = -Speed;
 			if (Input.GetKey (Left))
-				currentSpeed.x = -Speed;
+					currentSpeed.x = -Speed;
 			if (Input.GetKey (Right))
-				currentSpeed.x = Speed;
+					currentSpeed.x = Speed;
 			rigidbody2D.velocity = currentSpeed;
 			if (Input.GetKey (Sound)) {
-				AudioSource audio = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
-				if(!audio.isPlaying) {
-					audio.clip = clips[clip];
-					audio.Play();
+				AudioSource audio = GameObject.FindGameObjectWithTag ("Player").GetComponent<AudioSource> ();
+				if (!audio.isPlaying) {
+					audio.clip = clips [clip];
+					audio.Play ();
 				}
 			}
+		} else {
+			transform.rigidbody2D.velocity = Vector2.zero;
 		}
 	}
 
@@ -50,7 +52,7 @@ public class PlayerInput : MonoBehaviour {
 		if (coll.collider.gameObject.tag == "Enemy") {
 			if (!dead) {
 				Transform t = coll.gameObject.transform;
-				Instantiate(blood, t.position, t.rotation); 
+				Instantiate(blood, t.position, t.rotation);
 				dead = true;
 			}
 		}
