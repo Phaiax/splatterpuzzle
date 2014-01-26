@@ -6,19 +6,30 @@ public enum AiState
 	Pursue,
 	Flee,
 	Roam,
+	Follow,
 }
 
 public class Enemy : MonoBehaviour {
 
-	public AiState State;
-	public float PursueDistance;
+	private AiState State;
+
+	public float PlayerNearDistance;
+
+	public AiState PlayerNearAction;
+	public AiState DefaultAction;
+	public AiState HearedAction;
+	bool hearedSound;
+
 	public Target CurrentTarget;
 	public GameObject blood;
 
 	GameObject Player;
 	float RoamOrientation;
 	bool dead = false;
+
 	const float RoamDist = 10f;
+	const float RestToRoamTimerStart = 5f;
+	float ResetToRoamTimer;
 
 	// Use this for initialization
 	void Start () {
@@ -40,11 +51,17 @@ public class Enemy : MonoBehaviour {
 	/// </summary>
 	private void Think()
 	{
-		float distance = Vector2.Distance(Player.transform.position, this.transform.position);
-		if (distance < PursueDistance)
-			State = AiState.Pursue;
+		if (!hearedSound) {
+			float distance = Vector2.Distance (Player.transform.position, this.transform.position);
+			if (distance < PlayerNearDistance)
+					State = PlayerNearAction;
+			else
+					State = DefaultAction;
+		}
 		else
-			State = AiState.Roam;
+		{
+			State = HearedAction;
+		}
 	}
 
 	private void Act()
@@ -65,13 +82,16 @@ public class Enemy : MonoBehaviour {
 		rigidbody2D.velocity = so.Linear;
 	}
 
-	public void Die()
+	public void Die(GameObject obj)
 	{
 		dead = true;
+		Transform t = obj.transform;
+		Instantiate(blood, t.position, Random.rotation);
 	}
-
+	
 	public void HearSound(int sound)
 	{
+		hearedSound = true;
 
 	}
 
@@ -79,9 +99,7 @@ public class Enemy : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.collider.gameObject.tag == "Player") {
 			if (!dead) {
-				Transform t = coll.gameObject.transform;
-				Instantiate(blood, t.position, Random.rotation);
-				dead = true;
+				Die(coll.gameObject);
 			} else if (coll.collider.gameObject.tag == "wall") {
 				NewRandomRoamTarget();
 			}

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
@@ -17,7 +17,8 @@ public class PlayerInput : MonoBehaviour {
 	public GameObject blood;
 
 	private bool dead = false;
-	
+
+	public int LevelNum;
 
 	// Use this for initialization
 	void Start () {
@@ -57,7 +58,7 @@ public class PlayerInput : MonoBehaviour {
 		foreach (GameObject go in gos) {
 			Vector3 d = pos-go.transform.position;
 			if(d.x*d.x+d.y*d.y+d.z*d.z <= sqSoundRadius) {
-				((Enemy)go.GetComponent("Enemy")).HearSound(clip);
+				((Enemy)go.GetComponent("Enemy")).HearSound(LevelNum);
 			}
 		}
 	}
