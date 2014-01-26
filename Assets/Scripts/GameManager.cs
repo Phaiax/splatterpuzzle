@@ -39,10 +39,11 @@ public class GameManager : MonoBehaviour {
 
 		levelNumberGuiText.text = ThisLevelNumber;
 
-		UpdateLifeView();
 
 		if(currentLiveCount == -1)
 			FirstLevelFirstTry();
+
+		UpdateLifeView();
 
 		fadeDirection = FadeDirection.FadeIn;
 		alpha = 1f;
@@ -109,25 +110,17 @@ public class GameManager : MonoBehaviour {
 	private bool waitForViola = false;
 
 
-	IEnumerator Wait(){
-		//waitActive = true;
-		yield return new WaitForSeconds (2.0f);
-		//waitActive = false;
-	}
 
 	public void Loose()
 	{
 		GameManager.currentLiveCount--;
 		if(GameManager.currentLiveCount == 0)
 		{
+			UpdateLifeView();
 			GameOver();
 		}
 		else
 		{
-			PlayerInput p = GameObject.FindWithTag("player").GetComponent<PlayerInput>();
-			p.InvokeDeathAnimation();
-			StartCoroutine(Wait());
-			p.CancelDeathAnimation();
 			RestartLevel();
 		}
 	}
@@ -139,7 +132,7 @@ public class GameManager : MonoBehaviour {
 
 	public void GameOver()
 	{
-		FirstLevelFirstTry ();
+		//FirstLevelFirstTry ();
 		Application.LoadLevel ("P_GameOver");
 	}
 

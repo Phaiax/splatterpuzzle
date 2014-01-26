@@ -80,20 +80,4 @@ public class PlayerInput : MonoBehaviour {
 
 
 
-	public void InvokeDeathAnimation ()
-	{
-		InvokeRepeating("DeathAnimation", 0, 0.1f);
-	}
-
-	public void CancelDeathAnimation ()
-	{
-		CancelInvoke();
-	}
-
-	public void DeathAnimation()
-	{
-		Debug.Log("DEEE");
-		this.transform.localPosition = new Vector3(transform.localPosition.x + Random.Range(-5, 5)*1.0f, 
-		                                           transform.localPosition.y + Random.Range(-5, 5)*1.0f, 0);
-	}
 }
