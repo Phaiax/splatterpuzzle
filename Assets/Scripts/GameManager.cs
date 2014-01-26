@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 
 	public bool gameRunning = false;
 	public bool gameWon = false;
+	public bool gameLost = false;
 
 
 
@@ -50,6 +51,8 @@ public class GameManager : MonoBehaviour {
 		InvokeRepeating ("FadeStep", 0, fadeToBlackRefreshRate);
 
 		gameRunning = true;
+		gameLost = false;
+		gameWon = false;
 
 
 
@@ -83,6 +86,14 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKey (KeyCode.R) && !gameLost && !gameWon)
+		{
+			Loose();
+			gameRunning = false;
+			PlayerInput p = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
+			p.OMG();
+		}
+
 		float distance = Vector2.Distance(Player.transform.position, Goal.transform.position);
 		if (distance < GoalArrivedDelta && !gameWon) {
 			Win ();
@@ -136,9 +147,10 @@ public class GameManager : MonoBehaviour {
 		UpdateLifeView();
 		Debug.Log("Loose1");
 		CancelInvoke();
-		Invoke("Loose2", 5);
+		Invoke("Loose2", 3.7f);
 		SetBlackScreenAlpha(0f);
 		SetLevelNumberAlpha(0f);
+		gameLost = true;
 	}
 
 	public void Loose2()
