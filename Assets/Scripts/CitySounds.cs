@@ -7,12 +7,11 @@ public class CitySounds : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		InvokeRepeating ("PlaySound", 1.0f, 1.0f);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		if (Random.Range (1, 100000)<=30) {
+	void PlaySound () {
+		if(Random.Range(1, 1000)<50) {
 			AudioSource audio = GetComponent<AudioSource> ();
 			if (!audio.isPlaying) {
 				
