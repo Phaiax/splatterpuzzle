@@ -12,9 +12,10 @@ public class Enemy : MonoBehaviour {
 
 	public AiState State;
 	public float PursueDistance;
+	public Target CurrentTarget;
 
 	private GameObject Player;
-
+	private float RoamOrientation;
 
 	// Use this for initialization
 	void Start () {
@@ -33,7 +34,6 @@ public class Enemy : MonoBehaviour {
 	private void Think()
 	{
 		float distance = Vector2.Distance(Player.transform.position, this.transform.position);
-		Debug.Log (distance);
 		if (distance < PursueDistance)
 			State = AiState.Pursue;
 		else
@@ -46,10 +46,13 @@ public class Enemy : MonoBehaviour {
 		switch (State)
 		{
 			case(AiState.Pursue):
-				Debug.Log("Pursueing the Player!");
 				Target t = new Target();
 				t.TargetObject = Player;
 				so = Pursue.GetSteering(this.gameObject, t);
+				break;
+
+			case(AiState.Roam):
+				so = Roam.GetSteering(this.gameObject);
 				break;
 		}
 		rigidbody2D.velocity = so.Linear;
