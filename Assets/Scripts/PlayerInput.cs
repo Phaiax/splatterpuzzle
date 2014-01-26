@@ -38,7 +38,7 @@ public class PlayerInput : MonoBehaviour {
 					currentSpeed.x = Speed;
 			rigidbody2D.velocity = currentSpeed;
 			if (Input.GetKey (Sound)) {
-				AudioSource audio = GameObject.FindGameObjectWithTag ("Player").GetComponent<AudioSource> ();
+				AudioSource audio = GetComponent<AudioSource> ();
 				if (!audio.isPlaying) {
 
 					int clip = Random.Range(0, clips.Length - 1);
@@ -80,4 +80,20 @@ public class PlayerInput : MonoBehaviour {
 
 
 
+	public void InvokeDeathAnimation ()
+	{
+		InvokeRepeating("DeathAnimation", 0, 0.1f);
+	}
+
+	public void CancelDeathAnimation ()
+	{
+		CancelInvoke();
+	}
+
+	public void DeathAnimation()
+	{
+		Debug.Log("DEEE");
+		this.transform.localPosition = new Vector3(transform.localPosition.x + Random.Range(-5, 5)*1.0f, 
+		                                           transform.localPosition.y + Random.Range(-5, 5)*1.0f, 0);
+	}
 }

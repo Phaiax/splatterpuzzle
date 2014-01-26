@@ -108,6 +108,13 @@ public class GameManager : MonoBehaviour {
 	private AudioSource viola;
 	private bool waitForViola = false;
 
+
+	IEnumerator Wait(){
+		//waitActive = true;
+		yield return new WaitForSeconds (2.0f);
+		//waitActive = false;
+	}
+
 	public void Loose()
 	{
 		GameManager.currentLiveCount--;
@@ -117,6 +124,10 @@ public class GameManager : MonoBehaviour {
 		}
 		else
 		{
+			PlayerInput p = GameObject.FindWithTag("player").GetComponent<PlayerInput>();
+			p.InvokeDeathAnimation();
+			StartCoroutine(Wait());
+			p.CancelDeathAnimation();
 			RestartLevel();
 		}
 	}
