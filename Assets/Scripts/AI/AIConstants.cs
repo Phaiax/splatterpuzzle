@@ -3,8 +3,8 @@ using System.Collections;
 
 public static class AIConstants {
 
-	public static float AIMoveSpeed = 7f;
-	public static float AIRoamSpeed = 0.5f;
+	public static float AIMoveSpeed = 6f;
+	public static float AIRoamSpeed = 1.0f;
 }
 
 public class Target 

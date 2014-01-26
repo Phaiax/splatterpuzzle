@@ -30,8 +30,8 @@ public class Enemy : MonoBehaviour {
 	public bool dead = false;
 
 	const float RoamDist = 10f;
-	const float RestToRoamTimerStart = 5f;
-	float ResetToRoamTimer;
+	public float ResetToDefaultActionTime;
+	float ResetToDefaultActionTimer = 0f;
 
 	public AudioClip[] killed_clips;
 	public AudioClip[] mumble_clips;
@@ -79,12 +79,16 @@ public class Enemy : MonoBehaviour {
 	/// </summary>
 	private void Think()
 	{
-		if (!hearedSound) {
+		if (ResetToDefaultActionTimer < Time.time)
+		{
+			State = DefaultAction;
+			hearedSound = false;
+		}
+		if (!hearedSound) 
+		{
 			float distance = Vector2.Distance (Player.transform.position, this.transform.position);
 			if (distance < PlayerNearDistance)
-					State = PlayerNearAction;
-			else
-					State = DefaultAction;
+				State = PlayerNearAction;
 		}
 		else
 		{
@@ -179,9 +183,10 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 	
-		public void HearSound(int sound)
+	public void HearSound(int sound)
 	{
 		hearedSound = true;
+		ResetToDefaultActionTimer = Time.time + ResetToDefaultActionTime;
 	}
 
 	int bloodcounter = 0;
