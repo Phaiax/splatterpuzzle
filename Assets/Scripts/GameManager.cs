@@ -4,6 +4,8 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager Singleton;
+	public static int currentLiveCount = -1;
+	public const int startLiveCount = 3;
 
 	private GameObject Player;
 	private GameObject Goal;
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour {
 
 	public bool gameRunning = false;
 	public bool gameWon = false;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +39,11 @@ public class GameManager : MonoBehaviour {
 
 		levelNumberGuiText.text = ThisLevelNumber;
 
+		UpdateLifeView();
+
+		if(currentLiveCount == -1)
+			FirstLevelFirstTry();
+
 		fadeDirection = FadeDirection.FadeIn;
 		alpha = 1f;
 		InvokeRepeating ("FadeStep", 0, fadeToBlackRefreshRate);
@@ -43,7 +52,31 @@ public class GameManager : MonoBehaviour {
 
 	}
 
+	void FirstLevelFirstTry()
+	{
+		GameManager.currentLiveCount = GameManager.startLiveCount;
+	}
 
+	void UpdateLifeView()
+	{
+		GameObject[] lifes = GameObject.FindGameObjectsWithTag ("lifes");
+
+		foreach (GameObject life in lifes) {
+			switch(life.name)
+			{
+			case "Life1":
+				life.SetActive(GameManager.currentLiveCount >= 1); 
+				break;
+			case "Life2":
+				life.SetActive(GameManager.currentLiveCount >= 2);
+				break;
+			case "Life3":
+				life.SetActive(GameManager.currentLiveCount >= 3);
+				break;
+			}
+		}
+
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -77,7 +110,26 @@ public class GameManager : MonoBehaviour {
 
 	public void Loose()
 	{
-		Debug.Log ("Loose");
+		GameManager.currentLiveCount--;
+		if(GameManager.currentLiveCount == 0)
+		{
+			GameOver();
+		}
+		else
+		{
+			RestartLevel();
+		}
+	}
+
+	public void RestartLevel()
+	{
+		Application.LoadLevel(Application.loadedLevelName);
+	}
+
+	public void GameOver()
+	{
+		FirstLevelFirstTry ();
+		Application.LoadLevel ("P_GameOver");
 	}
 
 	void Win()
@@ -109,8 +161,8 @@ public class GameManager : MonoBehaviour {
 		if (fadeDirection == FadeDirection.FadeOut) {
 			alpha = alpha + 1f / steps;
 			if (alpha >= 1.0f) {
-					CancelInvoke ();
-					alpha = 1.0f;
+				CancelInvoke ();
+				alpha = 1.0f;
 				SetLevelNumberAlpha(alpha);
 			}
 		} else if (fadeDirection == FadeDirection.FadeIn) {
