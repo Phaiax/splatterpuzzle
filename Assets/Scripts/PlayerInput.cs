@@ -38,7 +38,7 @@ public class PlayerInput : MonoBehaviour {
 					currentSpeed.x = Speed;
 			rigidbody2D.velocity = currentSpeed;
 			if (Input.GetKey (Sound)) {
-				AudioSource audio = GameObject.FindGameObjectWithTag ("Player").GetComponent<AudioSource> ();
+				AudioSource audio = GetComponent<AudioSource> ();
 				if (!audio.isPlaying) {
 
 					int clip = Random.Range(0, clips.Length - 1);
