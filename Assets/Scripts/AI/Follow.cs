@@ -9,7 +9,7 @@ static class Follow
 	{
 		Vector3 direction = target.TargetObject.transform.position - obj.transform.position;
 		float distance = direction.magnitude;
-		if (distance < 5)
+		if (distance < 2.2f)
 			return new SteeringOutput ();
 		float speed = obj.rigidbody2D.velocity.magnitude;
 		float prediction;

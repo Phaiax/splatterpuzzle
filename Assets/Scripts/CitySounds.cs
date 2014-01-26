@@ -11,7 +11,7 @@ public class CitySounds : MonoBehaviour {
 	}
 	
 	void PlaySound () {
-		if(Random.Range(1, 1000)<500) {
+		if(Random.Range(1, 1000)<40) {
 			AudioSource audio = GetComponent<AudioSource> ();
 			if (!audio.isPlaying) {
 				

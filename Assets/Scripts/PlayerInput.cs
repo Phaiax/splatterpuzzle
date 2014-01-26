@@ -12,6 +12,7 @@ public class PlayerInput : MonoBehaviour {
 	public float soundRadius = 1.0f;
 
 	public AudioClip[] clips;
+	public AudioClip[] die_clips;
 
 	public GameObject blood;
 
@@ -22,6 +23,16 @@ public class PlayerInput : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	
+		switch(LevelNum){
+		case 2:
+			AIConstants.AIMoveSpeed = 4f;
+			AIConstants.AIRoamSpeed = 2.0f;
+			break;
+		default:
+			AIConstants.AIMoveSpeed = 6.0f;
+			AIConstants.AIRoamSpeed = 1.5f;
+			break;
+		}
 	}
 	
 	// Update is called once per frame
@@ -39,6 +50,8 @@ public class PlayerInput : MonoBehaviour {
 			rigidbody2D.velocity = currentSpeed;
 			if (Input.GetKey (Sound)) {
 				AudioSource audio = GetComponent<AudioSource> ();
+
+
 				if (!audio.isPlaying) {
 
 					int clip = Random.Range(0, clips.Length - 1);
@@ -46,10 +59,25 @@ public class PlayerInput : MonoBehaviour {
 					audio.clip = clips [clip];
 					audio.Play ();
 					callEnemys();
+				} else if(LevelNum == 6 && audio.time > 5) 
+				{
+					audio.Stop();
 				}
 			}
 		} else {
 			transform.rigidbody2D.velocity = Vector2.zero;
+		}
+	}
+
+	public void OMG(){
+		AudioSource audio = GetComponent<AudioSource> ();
+		if (!audio.isPlaying) {
+			
+			int clip = Random.Range(0, die_clips.Length - 1);
+			audio.volume = 1f;
+			audio.clip = die_clips [clip];
+			audio.Play ();
+			
 		}
 	}
 
@@ -72,6 +100,7 @@ public class PlayerInput : MonoBehaviour {
 				Transform t = coll.gameObject.transform;
 				Instantiate(blood, t.position, Random.rotation);
 				dead = true;
+				OMG();
 				GameManager.Singleton.Loose();
 			}
 			e.CollidedWithPlayer(this);

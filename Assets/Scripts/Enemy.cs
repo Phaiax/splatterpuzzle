@@ -11,6 +11,14 @@ public enum AiState
 	Die
 }
 
+
+public enum LState
+{
+	Mumble,
+	LHum,
+	LSing
+}
+
 public class Enemy : MonoBehaviour {
 
 	private AiState State;
@@ -35,6 +43,10 @@ public class Enemy : MonoBehaviour {
 
 	public AudioClip[] killed_clips;
 	public AudioClip[] mumble_clips;
+	public AudioClip[] lhum_clips;
+	public AudioClip[] lsing_clips;
+
+	public LState lstate = LState.Mumble;
 
 	// Use this for initialization
 	void Start () {
@@ -168,14 +180,25 @@ public class Enemy : MonoBehaviour {
 
 	void Mumble ()
 	{
-		if(inGroup())
+		if(inGroup() || lstate == LState.LSing || lstate == LState.LHum)
 		{
 			AudioSource audio = GetComponent<AudioSource> ();
 			if (!audio.isPlaying) {
 				
 				int clip = Random.Range(0, mumble_clips.Length - 1);
-				
-				audio.clip = mumble_clips [clip];
+				switch(lstate)
+				{
+				case LState.LHum:
+					audio.clip = lhum_clips [clip];
+					break;
+				case LState.LSing:
+					audio.clip = lsing_clips [clip];
+					break;
+				case LState.Mumble:
+					audio.clip = mumble_clips [clip];
+					break;
+				}
+
 				audio.volume = MumbleVolume;
 				audio.Play ();
 				
@@ -183,10 +206,25 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 	
-	public void HearSound(int sound)
+	public void HearSound(int level)
 	{
 		hearedSound = true;
 		ResetToDefaultActionTimer = Time.time + ResetToDefaultActionTime;
+
+		if(level == 6)
+		{
+			switch(lstate)
+			{
+			case LState.LHum:
+				lstate = LState.LSing;
+				break;
+			case LState.LSing:
+				break;
+			case LState.Mumble:
+				lstate = LState.LHum;
+				break;
+			}
+		}
 	}
 
 	int bloodcounter = 0;

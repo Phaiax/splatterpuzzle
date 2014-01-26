@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour {
 
 		gameRunning = true;
 
+
+
 	}
 
 	void FirstLevelFirstTry()
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour {
 	void UpdateLifeView()
 	{
 		GameObject[] lifes = GameObject.FindGameObjectsWithTag ("lifes");
-
+		Debug.Log("swgf");
 		foreach (GameObject life in lifes) {
 			switch(life.name)
 			{
@@ -85,6 +87,21 @@ public class GameManager : MonoBehaviour {
 		if (distance < GoalArrivedDelta && !gameWon) {
 			Win ();
 			Debug.Log ("You win!");
+		} else if(!gameWon && ThisLevelNumber == "6") {
+			int SingingEnemyCount = 0;
+			int totalEnemyCount = 0;
+			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+			foreach(GameObject e in enemies)
+			{
+				totalEnemyCount++;
+				Enemy eScr = e.GetComponent<Enemy>();
+				if(eScr.lstate == LState.LSing)
+					SingingEnemyCount++;
+			}
+			float percent = (float) SingingEnemyCount / (float) totalEnemyCount;
+			//Debug.Log ("Singing percent: " + percent.ToString());
+			if(percent > 0.50)
+				Win();
 		} else if(waitForViola) {
 			if(!viola.isPlaying)
 			{
@@ -110,19 +127,30 @@ public class GameManager : MonoBehaviour {
 	private bool waitForViola = false;
 
 
+	//private bool hasLost1 = false;
 
 	public void Loose()
 	{
+		//hasLost1 = true;
 		GameManager.currentLiveCount--;
+		UpdateLifeView();
+
+		Invoke("Loose2", 5);
+	}
+
+	public void Loose2()
+	{
+		//hasLost1 = false;
 		if(GameManager.currentLiveCount == 0)
 		{
-			UpdateLifeView();
 			GameOver();
 		}
 		else
 		{
 			RestartLevel();
 		}
+
+
 	}
 
 	public void RestartLevel()
