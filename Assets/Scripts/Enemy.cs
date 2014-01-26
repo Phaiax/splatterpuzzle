@@ -7,6 +7,7 @@ public enum AiState
 	Flee,
 	Roam,
 	Follow,
+	Freeze,
 }
 
 public class Enemy : MonoBehaviour {
@@ -78,6 +79,22 @@ public class Enemy : MonoBehaviour {
 			case(AiState.Roam):
 				so = Roam.GetSteering(this.gameObject);
 				break;
+
+			case(AiState.Flee):
+				Target tf = new Target();
+				tf.TargetObject = Player;
+				so = Flee.GetSteering(this.gameObject, tf);
+				break;
+
+			case(AiState.Follow):
+				Target tFollow = new Target();
+				tFollow.TargetObject = Player;
+				so = Follow.GetSteering(gameObject, tFollow);
+				break;
+
+			case(AiState.Freeze):
+				so = new SteeringOutput();
+				break;
 		}
 		rigidbody2D.velocity = so.Linear;
 	}
@@ -92,7 +109,6 @@ public class Enemy : MonoBehaviour {
 	public void HearSound(int sound)
 	{
 		hearedSound = true;
-
 	}
 
 
