@@ -98,7 +98,7 @@ function Update ()
 	if (!crawling)
 		return;
 	transform.Translate(Vector3.up * Time.deltaTime * speed);
-	if (gameObject.transform.position.y > 14)
+	if (gameObject.transform.position.y > 13)
 	{
 		crawling = false;
 	}
