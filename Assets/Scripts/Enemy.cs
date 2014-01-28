@@ -152,6 +152,7 @@ public class Enemy : MonoBehaviour {
 		audio.Stop ();
 		dead = true;
 		MakeBlood (t);
+		GameManager.Kills++;
 
 	}
 
