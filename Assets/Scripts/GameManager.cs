@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager Singleton;
 	public static int currentLiveCount = -1;
 	public const int startLiveCount = 3;
+	public static int Kills = 0;
 
 	private GameObject Player;
 	private GameObject Goal;
@@ -111,7 +112,7 @@ public class GameManager : MonoBehaviour {
 			}
 			float percent = (float) SingingEnemyCount / (float) totalEnemyCount;
 			//Debug.Log ("Singing percent: " + percent.ToString());
-			if(percent > 0.50)
+			if(percent > 0.70)
 				Win();
 		} else if(waitForViola) {
 			if(!viola.isPlaying)
@@ -178,6 +179,7 @@ public class GameManager : MonoBehaviour {
 	{
 		//FirstLevelFirstTry ();
 		GameManager.currentLiveCount = GameManager.startLiveCount;
+		GameManager.Kills = 0;
 		Application.LoadLevel ("P_GameOver");
 	}
 
