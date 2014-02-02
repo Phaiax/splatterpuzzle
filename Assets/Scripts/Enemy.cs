@@ -263,6 +263,7 @@ public class Enemy : MonoBehaviour {
 		else// if(Random.Range(1, 100) < 10)
 		{
 			MakeBlood(transform);
+			GameManager.Kills++;
 		}
 
 	}
