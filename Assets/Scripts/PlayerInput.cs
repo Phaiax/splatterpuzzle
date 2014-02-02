@@ -11,12 +11,15 @@ public class PlayerInput : MonoBehaviour {
 	public KeyCode Right_alternative;
 	public KeyCode Left_alternative;
 	public KeyCode Sound;
+	public KeyCode GodmodeKey;
 
 	public float Speed = 10;
 	public float soundRadius = 1.0f;
 
 	public AudioClip[] clips;
 	public AudioClip[] die_clips;
+	public AudioClip godmode_clip;
+	public float GodmodeTimeout = 7;
 
 	public GameObject blood;
 
@@ -46,6 +49,7 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	private bool die_animation_running = false;
+	private bool godmode_enabled = false;
 
 	// Update is called once per frame
 	void Update () {
@@ -78,6 +82,20 @@ public class PlayerInput : MonoBehaviour {
 					audio.Stop();
 				}
 			}
+			if(Input.GetKey(GodmodeKey) && !godmode_enabled)
+			{
+				AudioSource audio = GetComponent<AudioSource> ();
+				audio.Stop();
+				audio.volume = 1f;
+				audio.clip = godmode_clip;
+				audio.Play ();
+				if(!godmode_enabled){
+					this.Invoke("KillAll", GodmodeTimeout);
+
+				}
+				godmode_enabled = true;
+
+			}
 		} else {
 			if(die_animation_running)
 			{
@@ -92,6 +110,14 @@ public class PlayerInput : MonoBehaviour {
 				}
 			}
 			transform.rigidbody2D.velocity = Vector2.zero;
+		}
+	}
+
+	public void KillAll()
+	{
+		GameObject[] gos = GameObject.FindGameObjectsWithTag ("Enemy");
+		foreach (GameObject go in gos) {
+			((Enemy)go.GetComponent("Enemy")).Die(go.transform);
 		}
 	}
 
