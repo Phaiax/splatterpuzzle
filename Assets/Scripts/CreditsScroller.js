@@ -2,6 +2,8 @@
 
 var speed = 0.2;
 var crawling = false;
+private var TextSize: Rect; 
+
 
 function Start()
 {
@@ -18,7 +20,7 @@ function Start()
 	creds += "   Hannah Koch\n   Jan the Horrible\n   Mireille Greene\n   Phaiax\n   Turon the Great\n\n";
 	
 	creds += "Technical Directors\n";
-	creds += "   Jan the Horrible\n   Phaiax\n   Turon the Great\n\n";
+	creds += "   Jan the Horrible\n   Avan the Third\n   Turon the Great\n\n";
 	
 	creds += "Art Director\n";
 	creds += "   Hannah Koch\n\n";
@@ -89,16 +91,26 @@ function Start()
 	creds += "\n\n                     Thanks for playing!\n\n";
 	
 	creds += "                     Press O to restart the fun!";
+	creds += "                     (Or Alt + F4 to exit)";
 	tc.text = creds;
+	
+	TextSize = tc.GetScreenRect();
 	
 }
 
 function Update ()
 {
+	var tc2 = GetComponent(GUIText);
+
+	TextSize = tc2.GetScreenRect();
 	if (!crawling)
 		return;
 	transform.Translate(Vector3.up * Time.deltaTime * speed);
-	if (gameObject.transform.position.y > 13)
+	
+	var tc = GetComponent(GUIText);
+	Debug.Log(TextSize);
+	//if (gameObject.transform.position.y > 13)
+	if (TextSize.y > 200)
 	{
 		crawling = false;
 	}

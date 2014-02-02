@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour {
 			}
 			float percent = (float) SingingEnemyCount / (float) totalEnemyCount;
 			//Debug.Log ("Singing percent: " + percent.ToString());
-			if(percent > 0.70)
+			if(percent > 0.95)
 				Win();
 		} else if(waitForViola) {
 			if(!viola.isPlaying)
