@@ -63,7 +63,7 @@ public class PlayerInput : MonoBehaviour {
 				if (!audio.isPlaying) {
 
 					int clip = Random.Range(0, clips.Length - 1);
-
+					audio.volume = 0.5f;
 					audio.clip = clips [clip];
 					audio.Play ();
 					callEnemys();

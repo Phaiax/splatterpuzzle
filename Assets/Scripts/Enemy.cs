@@ -187,10 +187,12 @@ public class Enemy : MonoBehaviour {
 
 	public void Splatter(){
 		AudioSource audio = GetComponent<AudioSource> ();
+
 		if (!audio.isPlaying) {
 			
 			int clip = Random.Range(0, killed_clips.Length - 1);
 			audio.volume = 1f;
+			audio.maxDistance = 40f;
 			audio.clip = killed_clips [clip];
 			audio.Play ();
 
@@ -204,6 +206,7 @@ public class Enemy : MonoBehaviour {
 		if(inGroup() || lstate == LState.LSing || lstate == LState.LHum)
 		{
 			AudioSource audio = GetComponent<AudioSource> ();
+			audio.maxDistance = 4f;
 			if (!audio.isPlaying) {
 				
 				int clip; //= Random.Range(0, mumble_clips.Length - 1);
