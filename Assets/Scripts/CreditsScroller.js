@@ -61,6 +61,8 @@ function Start()
 	creds += "Lead Narrative Designer\n";
 	creds += "   Mireille Greene\n   Hannah Koch\n\n";
 	
+	creds += "{One of the F keys (F1 to F12) activates Godmode}\n\n";
+	
 	creds += "AI Programmer\n";
 	creds += "   Jan the Horrible\n   Phaiax\n   Turon the Great\n\n";
 	
@@ -90,8 +92,9 @@ function Start()
 	
 	creds += "\n\n                     Thanks for playing!\n\n";
 	
-	creds += "                     Press O to restart the fun!";
-	creds += "                     (Or Alt + F4 to exit)";
+	creds += "              >>>>> Press O to restart the fun!\n";
+	creds += "                      (Or Alt + F4 to exit)";
+	
 	tc.text = creds;
 	
 	TextSize = tc.GetScreenRect();
