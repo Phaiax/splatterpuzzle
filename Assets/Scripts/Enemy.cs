@@ -152,8 +152,28 @@ public class Enemy : MonoBehaviour {
 		audio.Stop ();
 		dead = true;
 		MakeBlood (t);
+		setColor (EnemyColor.Dead);
 		GameManager.Kills++;
 
+	}
+
+
+	public enum EnemyColor {
+		Alive,
+		Dead
+	}
+
+	public void setColor(EnemyColor c)
+	{
+		SpriteRenderer r = (SpriteRenderer) this.GetComponent ("SpriteRenderer");
+		switch (c) {
+		case EnemyColor.Alive:
+			r.color = new Color(197f/255f, 33f/255f, 33f/255f);
+			break;
+		case EnemyColor.Dead:
+			r.color = new Color(70f/255f, 0f/255f, 0f/255f);
+			break;
+		}
 	}
 
 	public void MakeBlood( Transform t)
