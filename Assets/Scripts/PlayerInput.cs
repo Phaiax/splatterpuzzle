@@ -6,6 +6,10 @@ public class PlayerInput : MonoBehaviour {
 	public KeyCode Down;
 	public KeyCode Right;
 	public KeyCode Left;
+	public KeyCode Up_alternative;
+	public KeyCode Down_alternative;
+	public KeyCode Right_alternative;
+	public KeyCode Left_alternative;
 	public KeyCode Sound;
 
 	public float Speed = 10;
@@ -43,13 +47,13 @@ public class PlayerInput : MonoBehaviour {
 	void Update () {
 		if (!dead && GameManager.Singleton.gameRunning) {
 			Vector2 currentSpeed = Vector2.zero;
-			if (Input.GetKey (Up))
+			if (Input.GetKey (Up) || Input.GetKey(Up_alternative))
 					currentSpeed.y = Speed;
-			if (Input.GetKey (Down))
+			if (Input.GetKey (Down) || Input.GetKey(Down_alternative))
 					currentSpeed.y = -Speed;
-			if (Input.GetKey (Left))
+			if (Input.GetKey (Left) || Input.GetKey(Left_alternative))
 					currentSpeed.x = -Speed;
-			if (Input.GetKey (Right))
+			if (Input.GetKey (Right) || Input.GetKey(Right_alternative))
 					currentSpeed.x = Speed;
 			rigidbody2D.velocity = currentSpeed;
 			if (Input.GetKey (Sound)) {
