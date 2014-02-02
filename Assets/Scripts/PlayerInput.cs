@@ -24,9 +24,11 @@ public class PlayerInput : MonoBehaviour {
 
 	public int LevelNum;
 
+	private GameObject FieldOfVision;
+
 	// Use this for initialization
 	void Start () {
-	
+		FieldOfVision = GameObject.FindGameObjectWithTag ("fog_parent");
 		switch(LevelNum){
 		case 2:
 			AIConstants.AIMoveSpeed = 4f;
@@ -42,7 +44,9 @@ public class PlayerInput : MonoBehaviour {
 			break;
 		}
 	}
-	
+
+	private bool die_animation_running = false;
+
 	// Update is called once per frame
 	void Update () {
 		if (!dead && GameManager.Singleton.gameRunning) {
@@ -75,6 +79,18 @@ public class PlayerInput : MonoBehaviour {
 				}
 			}
 		} else {
+			if(die_animation_running)
+			{
+				float current_scale = FieldOfVision.transform.localScale.x;
+				if(current_scale > 0.1f)
+				{
+					FieldOfVision.transform.localScale = new Vector3(current_scale - 0.01f, current_scale - 0.01f, 1f);
+				}
+				else
+				{
+					die_animation_running = false;
+				}
+			}
 			transform.rigidbody2D.velocity = Vector2.zero;
 		}
 	}
@@ -110,6 +126,7 @@ public class PlayerInput : MonoBehaviour {
 				Transform t = coll.gameObject.transform;
 				Instantiate(blood, t.position, Random.rotation);
 				dead = true;
+				die_animation_running = true;
 				OMG();
 				GameManager.Singleton.Loose();
 			}

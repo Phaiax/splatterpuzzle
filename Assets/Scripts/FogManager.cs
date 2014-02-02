@@ -5,18 +5,24 @@ public class FogManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Adjust ();
+	}
+
+	public void Adjust() {
+
+		
 
 		GameObject[] fog_rects = GameObject.FindGameObjectsWithTag ("fog_rects");
 
-		float w = 5;
-		float h = 5;
 
 		float circle_edge_length = 600.0f / 100.0f;
 		float rect_edge_length = 32.0f / 100.0f;
 
+		float factorforsides = 500;
+
 		// left rect
 		float factor = circle_edge_length / rect_edge_length;
-		Vector3 scale_lr = new Vector3(5 * factor, factor, 1);
+		Vector3 scale_lr = new Vector3(factorforsides * factor, factor, 1);
 
 
 		float width = rect_edge_length * scale_lr.x;
