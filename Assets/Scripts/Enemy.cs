@@ -48,9 +48,13 @@ public class Enemy : MonoBehaviour {
 
 	public LState lstate = LState.Mumble;
 
+	SpriteRenderer this_renderer;
+
+
 	// Use this for initialization
 	void Start () {
 		Player = GameObject.FindGameObjectWithTag("Player");
+		this_renderer = (SpriteRenderer) this.GetComponent ("SpriteRenderer");
 	}
 	
 	// Update is called once per frame
@@ -160,20 +164,50 @@ public class Enemy : MonoBehaviour {
 
 	public enum EnemyColor {
 		Alive,
-		Dead
+		Dead,
+		Humming,
+		Singing
 	}
+	EnemyColor current_color = EnemyColor.Alive;
 
 	public void setColor(EnemyColor c)
 	{
-		SpriteRenderer r = (SpriteRenderer) this.GetComponent ("SpriteRenderer");
-		switch (c) {
+		current_color = c;
+		switch (current_color) {
 		case EnemyColor.Alive:
-			r.color = new Color(197f/255f, 33f/255f, 33f/255f);
+			this_renderer.color = new Color(197f/255f, 33f/255f, 33f/255f);
 			break;
 		case EnemyColor.Dead:
-			r.color = new Color(70f/255f, 0f/255f, 0f/255f);
+			this_renderer.color = new Color(70f/255f, 0f/255f, 0f/255f);
+			break;
+		case EnemyColor.Humming:
+			this.InvokeRepeating("ColorSwype", 0f, 0.1f);
 			break;
 		}
+	}
+
+	public void ColorSwype()
+	{
+		float anim_duration = 2f;
+
+		switch (current_color) {
+		case EnemyColor.Singing:
+			anim_duration = 1f;
+			break;
+		case EnemyColor.Humming:
+			anim_duration = 3f;
+			break;
+		default:
+			this.CancelInvoke("ColorSwype");
+			return;
+		}
+		float progress = Time.timeSinceLevelLoad % anim_duration;
+		float t = progress / anim_duration * 2 * Mathf.PI;
+		float anim_base_val = Mathf.Sin(t);
+		this_renderer.color = new Color((197f + 40f * anim_base_val)/255f, 
+		                                (33f + 40f * anim_base_val)/255f, 
+		                                (33f + 40f * anim_base_val)/255f);
+
 	}
 
 	public void MakeBlood( Transform t)
@@ -246,11 +280,13 @@ public class Enemy : MonoBehaviour {
 			{
 			case LState.LHum:
 				lstate = LState.LSing;
+				setColor(EnemyColor.Singing);
 				break;
 			case LState.LSing:
 				break;
 			case LState.Mumble:
 				lstate = LState.LHum;
+				setColor(EnemyColor.Humming);
 				break;
 			}
 		}
