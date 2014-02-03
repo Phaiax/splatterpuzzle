@@ -61,7 +61,7 @@ function Start()
 	creds += "Lead Narrative Designer\n";
 	creds += "   Mireille Greene\n   Hannah Koch\n\n";
 	
-	creds += "{One of the F keys (F1 to F12) activates Godmode}\n\n";
+	creds += "{One of the numbers activates godmode}\n\n";
 	
 	creds += "AI Programmer\n";
 	creds += "   Jan the Horrible\n   Phaiax\n   Turon the Great\n\n";
